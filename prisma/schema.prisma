@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id            String   @id @default(uuid())
+  word          String
+  guesses       String[]
+  results       Json[]    @default([])
+  isCompleted   Boolean  @default(false)
+  isVictory     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  completedAt   DateTime?
+}
+model GameStatistics {
+  id              Int     @id @default(autoincrement())
+  totalGames      Int     @default(0)
+  totalVictories  Int     @default(0)
+  guessCounts     Int[]   // Array to store the number of guesses for each game
+}
+
