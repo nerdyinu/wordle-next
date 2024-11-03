@@ -1,9 +1,9 @@
 'use client'
 
-import { createGame } from "@/lib/api"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import router from "next/router"
-import { useState } from "react"
+import { createGame } from "@/lib/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 interface CreateGameModalProps {
   onModalClose: { onClose: () => void; };
 }
@@ -13,6 +13,7 @@ export default function CreateGameModal({ onModalClose: { onClose } }: CreateGam
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null)
 
+  const router = useRouter();
 
   const createGameMutation = useMutation<string, Error, string>({
     onSuccess: (hash) => {
