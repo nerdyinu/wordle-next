@@ -16,11 +16,10 @@ export default function CreateGameModal({ onModalClose: { onClose } }: CreateGam
 
   const createGameMutation = useMutation<string, Error, string>({
     onSuccess: (hash) => {
-      console.log("success", hash)
       router.push(`/game/${encodeURIComponent(hash)}`)
       onClose()
     },
-    onError: () => { console.log("fail?"); setError('Failed to create game. Please try again.') },
+    onError: () => setError('Failed to create game. Please try again.'),
     mutationFn: (word) => createGame(word)
   }, queryClient)
 

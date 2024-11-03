@@ -1,6 +1,6 @@
-import prisma from "@/lib/prisma"
-import { decrypt } from "@/lib/wordEncryption"
-import { NextRequest, NextResponse } from "next/server"
+import prisma from "@/lib/prisma";
+import { decrypt } from "@/lib/wordEncryption";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, props: { params: Promise<{ hash: string }> }) {
   const params = await props.params;

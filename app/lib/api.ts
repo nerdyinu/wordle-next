@@ -35,14 +35,14 @@ export async function createGame(word: string): Promise<string> {
 }
 
 export async function getGameState(hash: string): Promise<GameState> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/game/${hash}`, { cache: 'no-store' })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/game/play/${hash}`, { cache: 'no-store' })
   if (!res.ok) throw new Error('Failed to fetch game state')
   return res.json()
 }
 
 // Client-side fetch function
 export async function fetchGameState(hash: string): Promise<GameState> {
-  const res = await fetch(`/api/game/${hash}`)
+  const res = await fetch(`/api/game/play/${hash}`)
   if (!res.ok) throw new Error('Failed to fetch game state')
   return res.json()
 }

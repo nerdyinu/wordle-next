@@ -8,7 +8,6 @@ import { startGame } from '../lib/api'
 import CreateGameModal from './modal/CreateGameModal'
 
 export default function Home() {
-  const [word, setWord] = useState('')
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
