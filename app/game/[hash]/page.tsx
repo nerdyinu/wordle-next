@@ -1,12 +1,14 @@
 import Game from "@/components/Game";
+import Loader from "@/components/Loader";
 import { fetchStatistics, getGameState } from "@/lib/api";
-import { getDehydratedQueries, Hydrate } from "@/lib/query";
+import { getDehydratedSuspenseQueries, Hydrate } from "@/lib/query";
+import { Suspense } from "react";
 
 export default async function GamePage(props: { params: Promise<{ hash: string }> }) {
   const params = await props.params;
   console.log("gamepage")
   const decodedGameHash = decodeURIComponent(params.hash)
-  const dehydratedState = await getDehydratedQueries([{
+  const queries = getDehydratedSuspenseQueries([{
     queryKey: ['gameState', decodedGameHash],
     queryFn: () => getGameState(decodedGameHash!),
   },
@@ -16,8 +18,10 @@ export default async function GamePage(props: { params: Promise<{ hash: string }
   }])
 
   return (
-    <Hydrate state={[dehydratedState]}>
-      <Game gameHash={decodedGameHash} />
-    </Hydrate>
+    <Hydrate state={{ queries }} >
+      <Suspense fallback={<Loader />}>
+        <Game gameHash={decodedGameHash} />
+      </Suspense>
+    </ Hydrate>
   )
 }

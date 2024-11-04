@@ -3,6 +3,7 @@ import { evaluateGuess } from "@/lib/gameLogic"
 import prisma from "@/lib/prisma"
 import { decrypt } from "@/lib/wordEncryption"
 import { PrismaClient } from "@prisma/client/extension"
+import { JsonArray } from "@prisma/client/runtime/library"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest, props: { params: Promise<{ hash: string }> }) {
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest, props: { params: Promise<{ hash
   const word = decrypt(game.word)
   const result = evaluateGuess(guess, word)
   const updatedGuesses = [...game.guesses, guess]
-  const updatedResults = [...game.results, result]
+  const updatedResults = [...game.results, result] as JsonArray[]
   const isVictory = guess === word
   const isCompleted = isVictory || updatedGuesses.length >= 6
 

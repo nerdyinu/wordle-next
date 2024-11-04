@@ -29,6 +29,7 @@ export default function Game({ gameHash }: { gameHash: string }) {
       mutationFn: (guess: string) => makeGuess(gameHash, guess),
       onSuccess: (updatedGameState) => {
         queryClient.invalidateQueries({ queryKey: ['gameState', gameHash] })
+        queryClient.invalidateQueries({ queryKey: ['statistics'] })
         if (updatedGameState.isCompleted) {
           setShowResultModal(true)
         }
