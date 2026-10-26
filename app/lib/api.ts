@@ -1,10 +1,4 @@
-import { GameState, Statistics } from "./types"
-export async function fetchStatistics(): Promise<Statistics> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/statistics`)
-  if (!res.ok) throw new Error('Failed to fetch statistics')
-  return res.json()
-}
-
+import { GameState, Statistics } from "./types";
 
 export async function getStatistics(): Promise<Statistics> {
   const res = await fetch('/api/statistics')
@@ -33,13 +27,6 @@ export async function createGame(word: string): Promise<string> {
   console.log(data)
   return data.hash
 }
-
-export async function getGameState(hash: string): Promise<GameState> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/game/play/${hash}`, { cache: 'no-store' })
-  if (!res.ok) throw new Error('Failed to fetch game state')
-  return res.json()
-}
-
 // Client-side fetch function
 export async function fetchGameState(hash: string): Promise<GameState> {
   const res = await fetch(`/api/game/play/${hash}`)

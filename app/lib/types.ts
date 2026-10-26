@@ -6,7 +6,8 @@ export interface GameState {
   results: GuessResult[];
   isCompleted: boolean;
   isVictory: boolean;
-  startTime: Date;
+  createdAt: string;           // ISO string: it travels as JSON
+  completedAt: string | null;
 }
 
 export interface Statistics {

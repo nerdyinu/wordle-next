@@ -1,7 +1,7 @@
-import { validateWord } from '@/lib/dictionaryApi'
-import prisma from '@/lib/prisma'
-import { encrypt } from '@/lib/wordEncryption'
-import { NextRequest, NextResponse } from 'next/server'
+import { validateWord } from '@/lib/dictionaryApi';
+import prisma from '@/lib/prisma';
+import { encrypt } from '@/lib/wordEncryption';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const { word } = await request.json()

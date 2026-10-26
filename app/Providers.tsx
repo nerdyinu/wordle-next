@@ -4,9 +4,9 @@ import {
   isServer,
   QueryClient,
   QueryClientProvider,
-} from '@tanstack/react-query'
-import { PropsWithChildren } from 'react'
-import QueryErrorBoundary from './components/QueryErrorBoundary'
+} from '@tanstack/react-query';
+import { PropsWithChildren } from 'react';
+import QueryErrorBoundary from './components/QueryErrorBoundary';
 
 function makeQueryClient() {
   return new QueryClient({

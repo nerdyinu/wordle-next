@@ -1,14 +1,18 @@
-import { validateWord } from "@/lib/dictionaryApi"
-import { evaluateGuess } from "@/lib/gameLogic"
-import prisma from "@/lib/prisma"
-import { decrypt } from "@/lib/wordEncryption"
-import { PrismaClient } from "@prisma/client/extension"
-import { JsonArray } from "@prisma/client/runtime/library"
-import { NextRequest, NextResponse } from "next/server"
+import { validateWord } from "@/lib/dictionaryApi";
+import { gameViewSelect, safeDecrypt, toGameState } from "@/lib/game.service";
+import { evaluateGuess } from "@/lib/gameLogic";
+import prisma from "@/lib/prisma";
+import { decrypt } from "@/lib/wordEncryption";
+import { PrismaClient } from "@prisma/client/extension";
+import { JsonArray } from "@prisma/client/runtime/library";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest, props: { params: Promise<{ hash: string }> }) {
   const params = await props.params;
-  const gameId = decrypt(params.hash)
+  const gameId = safeDecrypt(params.hash)
+  if (!gameId) {
+    return NextResponse.json({ error: 'Game not found' }, { status: 404 })
+  }
   const { guess } = await request.json()
 
   const game = await prisma.game.findUnique({ where: { id: gameId } })
@@ -39,7 +43,8 @@ export async function POST(request: NextRequest, props: { params: Promise<{ hash
       isCompleted,
       isVictory,
       completedAt: isCompleted ? new Date() : undefined
-    }
+    },
+    select: gameViewSelect
   })
 
   if (isCompleted) {
@@ -47,7 +52,7 @@ export async function POST(request: NextRequest, props: { params: Promise<{ hash
   }
 
 
-  return NextResponse.json(updatedGame)
+  return NextResponse.json(toGameState(updatedGame))
 }
 
 async function updateStatistics(prisma: PrismaClient, isVictory: boolean, guessCount: number) {
