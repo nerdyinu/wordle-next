@@ -1,9 +1,8 @@
-import prisma from "@/lib/prisma"
-import { NextResponse } from "next/server"
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function GET() {
-  const stats = await prisma.gameStatistics.findFirst()
-
+  const stats = await prisma.gameStatistics.findUnique({ where: { id: 1 } })
   if (!stats) {
     return NextResponse.json({ error: 'Statistics not found' }, { status: 404 })
   }

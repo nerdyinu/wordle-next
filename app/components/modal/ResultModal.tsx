@@ -19,7 +19,7 @@ const ResultModal: React.FC<ResultModalProps> = ({ isVictory, playTime, handleOn
   const { totalGames, totalVictories, winRate, guessDistribution } = stats;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <h2 className="text-2xl font-bold mb-4 text-center">
@@ -50,7 +50,7 @@ const ResultModal: React.FC<ResultModalProps> = ({ isVictory, playTime, handleOn
             {Object.entries(guessDistribution).map(([guesses, count]) => (
               <div key={guesses} className="flex items-center mb-2">
                 <span className="w-8 text-right mr-2">{guesses}:</span>
-                <div className="flex-grow bg-gray-200 rounded-full h-4">
+                <div className="grow bg-gray-200 rounded-full h-4">
                   <div
                     className="bg-blue-500 rounded-full h-4"
                     style={{ width: `${(count / totalGames) * 100}%` }}

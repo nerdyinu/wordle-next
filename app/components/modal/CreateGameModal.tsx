@@ -32,7 +32,7 @@ export default function CreateGameModal({ onModalClose: { onClose } }: CreateGam
   }
   return (
     (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+      <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4">
         <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
           <div className="p-6">
             <h2 className="text-2xl font-bold mb-4 text-gray-800">워들 생성하기</h2>
@@ -43,7 +43,7 @@ export default function CreateGameModal({ onModalClose: { onClose } }: CreateGam
                 onChange={(e) => setWord(e.target.value)}
                 maxLength={5}
                 placeholder="5글자 단어 입력"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               />
               {error && <p className="text-red-500">{error}</p>}
               <div className="flex justify-end space-x-2">

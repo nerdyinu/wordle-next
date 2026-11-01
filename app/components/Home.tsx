@@ -1,11 +1,11 @@
 // components/HomeComponent.tsx
 'use client'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { startGame } from '../lib/api'
-import CreateGameModal from './modal/CreateGameModal'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { startGame } from '../lib/api';
+import CreateGameModal from './modal/CreateGameModal';
 
 export default function Home() {
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -26,13 +26,12 @@ export default function Home() {
         <div className="flex flex-col items-center space-y-4">
           <button
             onClick={() => startGameMutation.mutate()}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full"
-          >
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-sm w-full"          >
             시작하기
           </button>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full"
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-sm w-full"
           >
             워들 생성하기
           </button>

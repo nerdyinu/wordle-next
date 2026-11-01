@@ -1,0 +1,27 @@
+diff --git a/app/components/Game.tsx b/app/components/Game.tsx
+index 543d8b3..53ae641 100644
+--- a/app/components/Game.tsx
++++ b/app/components/Game.tsx
+@@ -1,7 +1,7 @@
+ 'use client'
+ 
+ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+-import { useMemo, useState } from 'react';
++import { useState } from 'react';
+ import { fetchGameState, makeGuess } from '../lib/api';
+ import { GameState } from '../lib/types';
+ import GameBoard from './GameBoard';
+@@ -53,10 +53,9 @@ export default function Game({ gameHash }: { gameHash: string }) {
+   }
+ 
+ 
+-  const playTime = useMemo(() => {
+-    if (!gameState?.completedAt) return 0
+-    return Math.round((Date.parse(gameState.completedAt) - Date.parse(gameState.createdAt)) / 1000)
+-  }, [gameState?.createdAt, gameState?.completedAt]);
++  const playTime = gameState?.completedAt
++    ? Math.round((Date.parse(gameState.completedAt) - Date.parse(gameState.createdAt)) / 1000)
++    : 0
+ 
+   if (isPending) return <Loader />;
+   if (!gameState) return <div className="text-center text-xl mt-8">No game found</div>;

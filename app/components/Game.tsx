@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { fetchGameState, makeGuess } from '../lib/api';
 import { GameState } from '../lib/types';
 import GameBoard from './GameBoard';
@@ -34,6 +34,7 @@ export default function Game({ gameHash }: { gameHash: string }) {
         queryClient.setQueryData(['gameState', gameHash], updatedGameState)
         queryClient.invalidateQueries({ queryKey: ['statistics'] })
         if (updatedGameState.isCompleted) {
+          setCurrentGuess('') // letters typed while the finishing guess was pending can't be sent any more
           setShowResultModal(true)
         }
       },
@@ -42,10 +43,15 @@ export default function Game({ gameHash }: { gameHash: string }) {
 
   const handleKeyPress = async (key: string) => {
     if (gameState?.isCompleted) return
-    if (key === 'ENTER' && currentGuess.length === 5) {
-      guessMutation.mutate(currentGuess)
-      setCurrentGuess('')
-    } else if (key === 'BACKSPACE') {
+    if (key === 'ENTER') {
+      // Submit only a full guess, and only one at a time: a second guess sent while the first is pending
+      // could be stored before it.
+      if (currentGuess.length === 5 && !guessMutation.isPending) {
+        guessMutation.mutate(currentGuess)
+        setCurrentGuess('')
+      }
+    }
+    else if (key === 'BACKSPACE') {
       setCurrentGuess(prev => prev.slice(0, -1))
     } else if (currentGuess.length < 5) {
       setCurrentGuess(prev => prev + key)
@@ -53,11 +59,9 @@ export default function Game({ gameHash }: { gameHash: string }) {
   }
 
 
-  const playTime = useMemo(() => {
-    if (!gameState?.completedAt) return 0
-    return Math.round((Date.parse(gameState.completedAt) - Date.parse(gameState.createdAt)) / 1000)
-  }, [gameState?.createdAt, gameState?.completedAt]);
-
+  const playTime = gameState?.completedAt
+    ? Math.round((Date.parse(gameState.completedAt) - Date.parse(gameState.createdAt)) / 1000)
+    : 0
   if (isPending) return <Loader />;
   if (!gameState) return <div className="text-center text-xl mt-8">No game found</div>;
 

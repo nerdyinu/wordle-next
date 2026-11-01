@@ -2,8 +2,16 @@
 import crypto from 'crypto';
 
 const chainingMode = 'aes-256-cbc';
-const privateKey = crypto.randomBytes(32);
-const ivKey = crypto.randomBytes(16);
+
+// One key and IV per server process, shared by every copy of this module. Turbopack bundles the route handlers
+// and the pages separately; with a key per copy, a page couldn't decrypt a link that a route handler made.
+const globalWithKeys = global as typeof globalThis & {
+  wordEncryptionKeys?: { privateKey: Buffer; ivKey: Buffer };
+};
+if (!globalWithKeys.wordEncryptionKeys) {
+  globalWithKeys.wordEncryptionKeys = { privateKey: crypto.randomBytes(32), ivKey: crypto.randomBytes(16) };
+}
+const { privateKey, ivKey } = globalWithKeys.wordEncryptionKeys;
 
 export const encrypt = (utf8Text: string): string => {
   const cipher = crypto.createCipheriv(chainingMode, privateKey, ivKey);

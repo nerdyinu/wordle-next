@@ -35,7 +35,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ guesses, results, currentGuess })
       {rows.map((row, i) => (
         <div key={i} className="grid grid-cols-5 gap-5">
           {row.map((tile, j) => (
-            <div key={j} className={cn('w-50 h-50 flex justify-center items-center font-bold border-solid border-[#ccc] border-2 color-white', {
+            <div key={j} className={cn('flex justify-center items-center font-bold border-solid border-[#ccc] border-2 color-white', {
               "bg-[#6aaa64]": tile.status === "correct",
               "bg-[#c9b458]": tile.status === "present",
               "bg-[#787c72]": tile.status === "absent"
